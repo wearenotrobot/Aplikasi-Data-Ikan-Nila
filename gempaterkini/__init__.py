@@ -2,6 +2,8 @@
 init.py adalah package yang akan dibaca sebelum module di import
 kode yang dijalankan adalah kode yang tidak di indentasi
 """
+import requests
+from bs4 import BeautifulSoup
 
 def ekstraksi_data():
     """
@@ -14,18 +16,33 @@ def ekstraksi_data():
     Dirasakan: Dirasakan (Skala MMI): II-III Monokwari, II-III Ronsiki
     :return:
     """
-    hasil = dict()
-    hasil['tanggal'] = '24 Agustus 2021'
-    hasil['waktu'] = '12:05:52 WIB'
-    hasil['magnitudo'] = 4.0
-    hasil['lokasi'] = {'ls': 1.48, 'bt': 134.01}
-    hasil['pusat gempa'] = 'Pusat Gempa berada di darat 18 km barat laut Ransiki'
-    hasil['dirasakan'] = 'Dirasakan (Skala MMI): II-III Monokwari, II-III Ronsiki'
+    try:
+        content = requests.get("https://www.bmkg.go.id")
+    except Exception:
+        return None
 
-    return hasil #prefer di pisah supaya terlihat proses akhirnya.
+    if content.status_code == 200:
+        print(content.status_code)
 
+        #soup = BeautifulSoup(content)
+        #print(soup.prettify())
 
-def tampilkan_data(result): #ii tidak dikirimkan ke mobile karena hanya dibaca di konsol.
+        hasil = dict()
+        hasil['tanggal'] = '24 Agustus 2021'
+        hasil['waktu'] = '12:05:52 WIB'
+        hasil['magnitudo'] = 4.0
+        hasil['lokasi'] = {'ls': 1.48, 'bt': 134.01}
+        hasil['pusat gempa'] = 'Pusat Gempa berada di darat 18 km barat laut Ransiki'
+        hasil['dirasakan'] = 'Dirasakan (Skala MMI): II-III Monokwari, II-III Ronsiki'
+
+        return hasil #prefer di pisah supaya terlihat proses akhirnya.
+    else:
+        return None
+
+def tampilkan_data(result): #ini tidak dikirimkan ke mobile karena hanya dibaca di konsol.
+    if result is None:
+        print('Tidak bisa menemukan data gempa terkini')
+        return
     print('Gempa terakhir berdasarkan BMKG')
     print(f"Tanggal {result['tanggal']}")
     print(f"Waktu {result['waktu']}")

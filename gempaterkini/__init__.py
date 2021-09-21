@@ -53,6 +53,7 @@ def tampilkan_data(result): #ini tidak dikirimkan ke mobile karena hanya dibaca 
     print(f"Dirasakan {result['dirasakan']}")
 
 
+
 # if __name__ == '__main__':
 #      print('Ini adalah package gempaterkini')
 

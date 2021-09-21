@@ -22,14 +22,15 @@ def ekstraksi_data():
         return None
 
     if content.status_code == 200:
-        print(content.status_code)
-
-        #soup = BeautifulSoup(content)
-        #print(soup.prettify())
+        soup = BeautifulSoup(content.text, 'html.parser')
+        result = soup.find('span', {'class': 'waktu'})
+        result = result.text.split(', ')
+        tanggal = result[0]
+        waktu = result[1]
 
         hasil = dict()
-        hasil['tanggal'] = '24 Agustus 2021'
-        hasil['waktu'] = '12:05:52 WIB'
+        hasil['tanggal'] = tanggal #'24 Agustus 2021'
+        hasil['waktu'] = waktu #'12:05:52 WIB'
         hasil['magnitudo'] = 4.0
         hasil['lokasi'] = {'ls': 1.48, 'bt': 134.01}
         hasil['pusat gempa'] = 'Pusat Gempa berada di darat 18 km barat laut Ransiki'
